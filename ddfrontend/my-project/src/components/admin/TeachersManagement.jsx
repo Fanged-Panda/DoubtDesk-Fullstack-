@@ -85,7 +85,7 @@ const TeachersManagement = () => {
                       {teacher.institute}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {teacher.solvedQuestionsCount}
+                      {teacher.solvedQuestionsCount ?? teacher.solvedCount ?? 0}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <span

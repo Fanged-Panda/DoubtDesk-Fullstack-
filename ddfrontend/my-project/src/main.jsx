@@ -14,7 +14,7 @@ import StudentLoginPage from "./components/auth/StudentLoginPage";
 import TeacherLoginPage from "./components/auth/TeacherLoginPage";
 import AdminLoginPage from "./components/auth/AdminLoginPage";
 import StudentDashboard from "./components/student/StudentDashboard";
-import PendingQuestionsDashboard from "./components/teacher/PendingQuestionsDashboard";
+import PendingQuestionsGroupedTable from "./components/teacher/PendingQuestionsGroupedTable";
 import SolvedQuestionsDashboard from "./components/teacher/SolvedQuestionsDashboard";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import StudentsManagement from "./components/admin/StudentsManagement";
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
       // Teacher Routes
       {
         path: "teacher/dashboard",
-        element: <PendingQuestionsDashboard />,
+        element: <PendingQuestionsGroupedTable />,
       },
       {
         path: "teacher/solved",

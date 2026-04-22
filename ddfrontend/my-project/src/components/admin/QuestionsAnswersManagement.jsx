@@ -122,27 +122,122 @@ const QuestionsAnswersManagement = () => {
       </div>
 
       {viewingQuestion && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Question Details
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full my-8">
+            <h3 className="text-3xl font-bold text-gray-800 mb-6">
+              Question & Answer Details
             </h3>
-            <div className="text-left space-y-3">
-              <p>
-                <strong>Student:</strong> {viewingQuestion.studentEmail}
-              </p>
-              <div className="p-3 bg-gray-50 rounded-md border">
-                <p className="font-semibold">Question:</p>
-                <p>{viewingQuestion.description}</p>
-                <AttachmentDisplay
-                  attachments={viewingQuestion.questionAttachments}
-                />
+            
+            <div className="text-left space-y-5">
+              {/* Student Info */}
+              <div className="border-b pb-4">
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>📧 Student Email:</strong>
+                </p>
+                <p className="text-base text-gray-800">{viewingQuestion.studentEmail}</p>
+              </div>
+
+              {/* Question Section */}
+              <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                <p className="font-bold text-blue-900 mb-2 text-lg">❓ Question</p>
+                <p className="font-semibold text-gray-900 mb-2">
+                  {viewingQuestion.questionTitle}
+                </p>
+                <p className="text-gray-700 mb-3">{viewingQuestion.description}</p>
+                {viewingQuestion.questionAttachments && viewingQuestion.questionAttachments.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-blue-200">
+                    <p className="text-sm font-semibold text-gray-700 mb-2">📎 Question Attachments:</p>
+                    <AttachmentDisplay attachments={viewingQuestion.questionAttachments} />
+                  </div>
+                )}
+              </div>
+
+              {/* Answer Section */}
+              {viewingQuestion.solutionText || viewingQuestion.answerText ? (
+                <div className="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="font-bold text-green-900 text-lg">✅ Answer</p>
+                    {viewingQuestion.solvedByTeacherName && (
+                      <span className="text-sm bg-green-200 text-green-800 px-2 py-1 rounded">
+                        By: {viewingQuestion.solvedByTeacherName}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-700 mb-3 whitespace-pre-wrap">
+                    {viewingQuestion.solutionText || viewingQuestion.answerText}
+                  </p>
+                  {viewingQuestion.solutionAttachments && viewingQuestion.solutionAttachments.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-green-200">
+                      <p className="text-sm font-semibold text-gray-700 mb-2">📎 Answer Attachments:</p>
+                      <AttachmentDisplay attachments={viewingQuestion.solutionAttachments} />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-200">
+                  <p className="text-yellow-800 font-semibold">⏳ Answer: Not Answered Yet</p>
+                </div>
+              )}
+
+              {/* Status & Teacher Info */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-3 rounded-lg border">
+                  <p className="text-xs text-gray-600 uppercase font-semibold">Status</p>
+                  <p className="text-lg font-bold text-gray-900 mt-1">
+                    <span
+                      className={`px-3 py-1 rounded-full inline-block ${
+                        viewingQuestion.status === "solved"
+                          ? "bg-green-100 text-green-800"
+                          : viewingQuestion.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                    >
+                      {viewingQuestion.status?.toUpperCase()}
+                    </span>
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg border">
+                  <p className="text-xs text-gray-600 uppercase font-semibold">Teacher</p>
+                  <p className="text-base font-semibold text-gray-900 mt-1">
+                    {viewingQuestion.solvedByTeacherEmail ? (
+                      <>
+                        <span>{viewingQuestion.solvedByTeacherName || "Unknown"}</span>
+                        <br />
+                        <span className="text-xs text-gray-600">{viewingQuestion.solvedByTeacherEmail}</span>
+                      </>
+                    ) : (
+                      <span className="text-gray-500">Not assigned</span>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Timestamps */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-gray-50 p-3 rounded-lg border">
+                  <p className="text-xs text-gray-600 uppercase font-semibold">Posted At</p>
+                  <p className="text-gray-800 mt-1">
+                    {viewingQuestion.postAt
+                      ? new Date(viewingQuestion.postAt).toLocaleString()
+                      : "N/A"}
+                  </p>
+                </div>
+                {viewingQuestion.answerAt && (
+                  <div className="bg-gray-50 p-3 rounded-lg border">
+                    <p className="text-xs text-gray-600 uppercase font-semibold">Answered At</p>
+                    <p className="text-gray-800 mt-1">
+                      {new Date(viewingQuestion.answerAt).toLocaleString()}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="text-right mt-6">
+
+            <div className="text-right mt-8">
               <button
                 onClick={() => setViewingQuestion(null)}
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition"
               >
                 Close
               </button>

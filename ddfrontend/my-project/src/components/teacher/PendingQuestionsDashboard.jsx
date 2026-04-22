@@ -17,13 +17,13 @@ const PendingQuestionsDashboard = () => {
   const [totalPages, setTotalPages] = useState(0);
   const pageSize = 5;
 
-  const fetchPendingQuestions = async () => {
+  const fetchPendingQuestions = async (isPolling = false) => {
     if (!loggedInUser?.email) {
-      setLoading(false);
+      if (!isPolling) setLoading(false);
       return;
     }
     try {
-      setLoading(true);
+      if (!isPolling) setLoading(true);
       const response = await api.get(
         `/questions/pending?email=${loggedInUser.email}&page=${currentPage}&size=${pageSize}&sort=postAt,desc`
       );
@@ -32,14 +32,18 @@ const PendingQuestionsDashboard = () => {
       setTotalPages(response.data.totalPages);
       setError(null);
     } catch (err) {
-      setError("Failed to load pending questions.");
+      if (!isPolling) setError("Failed to load pending questions.");
       console.error(err);
     } finally {
-      setLoading(false);
+      if (!isPolling) setLoading(false);
     }
   };
   useEffect(() => {
     fetchPendingQuestions();
+    const interval = setInterval(() => {
+      fetchPendingQuestions(true);
+    }, 10000);
+    return () => clearInterval(interval);
   }, [loggedInUser, currentPage]);
 
   const handleNextPage = () => {

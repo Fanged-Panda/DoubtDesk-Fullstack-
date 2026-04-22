@@ -19,9 +19,10 @@ const AuthProvider = ({ children }) => {
       try {
         setLoadingCourses(true);
         const response = await api.get("/courses");
-        setCourses(response.data);
+        setCourses(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Failed to fetch courses:", error);
+        setCourses([]);
       } finally {
         setLoadingCourses(false);
       }

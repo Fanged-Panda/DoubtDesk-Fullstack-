@@ -1,0 +1,12 @@
+{
+  "name": "ddfulstack",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm --prefix ddfrontend/my-project run dev",
+    "dev:frontend": "npm --prefix ddfrontend/my-project run dev",
+    "dev:backend": "npm --prefix DoubtDeskBackend run dev",
+    "build": "npm --prefix ddfrontend/my-project run build",
+    "install:all": "npm --prefix DoubtDeskBackend install && npm --prefix ddfrontend/my-project install"
+  }
+}

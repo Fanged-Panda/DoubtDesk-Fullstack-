@@ -3,9 +3,15 @@ import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 import AttachmentDisplay from "../common/AttachmentDisplay"; // নতুন কম্পোনেন্ট ইম্পোর্ট
 
-const SolutionForm = ({ question, onCancel, onSolutionSuccess }) => {
+const SolutionForm = ({ 
+  question, 
+  onCancel, 
+  onSolutionSuccess, 
+  isEditing = false, 
+  initialSolutionText = "" 
+}) => {
   const { loggedInUser, addNotification } = useContext(AuthContext);
-  const [solutionText, setSolutionText] = useState("");
+  const [solutionText, setSolutionText] = useState(initialSolutionText);
   const [error, setError] = useState("");
 
   const [attachments, setAttachments] = useState([]);
@@ -64,9 +70,13 @@ const SolutionForm = ({ question, onCancel, onSolutionSuccess }) => {
         attachments: attachments,
       };
 
-      await api.post(`/questions/${question.questionId}/solve`, payload);
+      if (isEditing) {
+        await api.put(`/questions/${question.questionId}/solve`, payload);
+      } else {
+        await api.post(`/questions/${question.questionId}/solve`, payload);
+      }
 
-      if (question.studentEmail) {
+      if (question.studentEmail && !isEditing) {
         addNotification(
           question.studentEmail,
           question.questionId,
@@ -89,7 +99,7 @@ const SolutionForm = ({ question, onCancel, onSolutionSuccess }) => {
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-xl w-full">
           <h3 className="text-2xl font-bold text-blue-600 mb-4 text-center">
-            Solve Question
+            {isEditing ? "Edit Solution" : "Solve Question"}
           </h3>
           <div className="mb-4 p-4 bg-gray-50 rounded-md border text-left">
             <p className="font-semibold">{question.questionTitle}</p>
@@ -141,7 +151,7 @@ const SolutionForm = ({ question, onCancel, onSolutionSuccess }) => {
                 type="submit"
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg"
               >
-                Submit Solution
+                {isEditing ? "Save Changes" : "Submit Solution"}
               </button>
               <button
                 type="button"

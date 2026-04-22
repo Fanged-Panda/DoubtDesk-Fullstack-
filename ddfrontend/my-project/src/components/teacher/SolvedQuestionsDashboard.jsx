@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 import AttachmentDisplay from "../common/AttachmentDisplay";
+import SolutionForm from "./SolutionForm";
 
 const SolvedQuestionsDashboard = () => {
   const { loggedInUser } = useContext(AuthContext);
@@ -10,9 +11,9 @@ const SolvedQuestionsDashboard = () => {
   const [error, setError] = useState(null);
 
   const [viewingQuestionDetails, setViewingQuestionDetails] = useState(null);
+  const [editingQuestion, setEditingQuestion] = useState(null);
 
-  useEffect(() => {
-    const fetchSolvedQuestions = async () => {
+  const fetchSolvedQuestions = async () => {
       if (!loggedInUser?.email) return;
       try {
         setLoading(true);
@@ -31,6 +32,8 @@ const SolvedQuestionsDashboard = () => {
         setLoading(false);
       }
     };
+
+  useEffect(() => {
     fetchSolvedQuestions();
   }, [loggedInUser]);
 
@@ -46,6 +49,19 @@ const SolvedQuestionsDashboard = () => {
 
   const handleCloseDetailsView = () => {
     setViewingQuestionDetails(null);
+  };
+
+  const handleEditClick = () => {
+    setEditingQuestion(viewingQuestionDetails);
+  };
+
+  const handleEditSuccess = () => {
+    setEditingQuestion(null);
+    handleViewDetailsClick(viewingQuestionDetails.questionId);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingQuestion(null);
   };
 
   if (loading)
@@ -124,7 +140,13 @@ const SolvedQuestionsDashboard = () => {
               </div>
             </div>
 
-            <div className="text-right mt-4">
+            <div className="text-right mt-4 flex justify-end space-x-3">
+              <button
+                onClick={handleEditClick}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Edit Solution
+              </button>
               <button
                 onClick={handleCloseDetailsView}
                 className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
@@ -134,6 +156,16 @@ const SolvedQuestionsDashboard = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {editingQuestion && (
+        <SolutionForm
+          question={editingQuestion}
+          onCancel={handleCancelEdit}
+          onSolutionSuccess={handleEditSuccess}
+          isEditing={true}
+          initialSolutionText={editingQuestion.solutionText}
+        />
       )}
     </div>
   );
