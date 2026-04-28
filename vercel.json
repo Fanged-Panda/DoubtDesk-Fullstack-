@@ -19,8 +19,12 @@
       "destination": "/DoubtDeskBackend/api/index.js"
     },
     {
-      "source": "/(.*)",
+      "source": "/(.*\\.[a-zA-Z0-9]+)$",
       "destination": "/ddfrontend/my-project/dist/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/ddfrontend/my-project/dist/index.html"
     }
   ]
 }
