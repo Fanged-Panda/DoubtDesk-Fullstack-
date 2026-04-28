@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "DoubtDeskBackend/api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "ddfrontend/my-project/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/DoubtDeskBackend/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/ddfrontend/my-project/dist/$1"
+    }
+  ]
+}

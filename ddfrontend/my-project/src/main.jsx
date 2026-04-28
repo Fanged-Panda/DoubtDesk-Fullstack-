@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext.jsx"; // AuthProvider ইম
 
 // Component Imports
 import HomePage from "./components/common/HomePage";
+import CoursesPage from "./components/common/CoursesPage";
 import TeacherRegistrationForm from "./components/auth/TeacherRegistrationForm";
 import StudentRegistrationForm from "./components/auth/StudentRegistrationForm";
 import AdminRegistrationForm from "./components/auth/AdminRegistrationForm";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "courses",
+        element: <CoursesPage />,
       },
       // Auth Routes
       {

@@ -81,7 +81,7 @@ const EnrollmentForm = () => {
           >
             <strong className="font-bold">Success!</strong>
             <span className="block sm:inline">
-              Your purchase has been confirmed. Redirecting to dashboard...
+              Your purchase has been confirmed. Redirecting to student page...
             </span>
           </div>
         )}

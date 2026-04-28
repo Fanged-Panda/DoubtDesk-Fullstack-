@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+:root {
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-card: #ffffff;
+  --app-card-alt: #f1f5f9;
+  --app-text: #0f172a;
+  --app-muted: #64748b;
+  --app-border: #e2e8f0;
+  --app-accent: #2563eb;
+  --app-accent-strong: #1d4ed8;
+}
+
+html[data-theme="dark"] {
+  --app-bg: #0b1120;
+  --app-surface: #0f172a;
+  --app-card: #111827;
+  --app-card-alt: #0f172a;
+  --app-text: #e2e8f0;
+  --app-muted: #94a3b8;
+  --app-border: #1e293b;
+  --app-accent: #60a5fa;
+  --app-accent-strong: #3b82f6;
+}
+
 html,
 body,
 #root {

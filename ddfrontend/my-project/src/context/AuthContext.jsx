@@ -10,6 +10,9 @@ const AuthProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [highlightQuestionId, setHighlightQuestionId] = useState(null);
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("dd_theme") || "light"
+  );
   const [courses, setCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState(new Set());
@@ -31,6 +34,38 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("dd_theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    let interval;
+
+    const fetchNotifications = async () => {
+      if (!loggedInUser?.email) return;
+      try {
+        const response = await api.get(
+          `/notifications?email=${loggedInUser.email}`
+        );
+        setNotifications(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+      }
+    };
+
+    if (loggedInUser?.email) {
+      fetchNotifications();
+      interval = setInterval(fetchNotifications, 10000);
+    } else {
+      setNotifications([]);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [loggedInUser]);
+
+  useEffect(() => {
     const fetchEnrolledCourses = async () => {
       if (loggedInUser && loggedInUser.role === "student") {
         try {
@@ -50,32 +85,57 @@ const AuthProvider = ({ children }) => {
     fetchEnrolledCourses();
   }, [loggedInUser]);
 
-  const addNotification = (
+  const addNotification = async (
     recipientEmail,
     questionId,
     message,
     type = "solution"
   ) => {
-    const newNotification = {
-      id: Date.now(),
-      recipientEmail,
-      questionId,
-      message,
-      read: false,
-      timestamp: new Date().toLocaleString(),
-      type,
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+    try {
+      await api.post("/notifications", {
+        recipientEmail,
+        questionId,
+        message,
+        type,
+      });
+      if (loggedInUser?.email === recipientEmail) {
+        const response = await api.get(
+          `/notifications?email=${recipientEmail}`
+        );
+        setNotifications(Array.isArray(response.data) ? response.data : []);
+      }
+    } catch (error) {
+      console.error("Failed to add notification:", error);
+    }
   };
 
-  const markNotificationAsRead = (notificationId) => {
-    setNotifications((prev) =>
-      prev.filter((notif) => notif.id !== notificationId)
-    );
+  const markNotificationAsRead = async (notificationId) => {
+    try {
+      await api.patch(`/notifications/${notificationId}/read`);
+      setNotifications((prev) =>
+        prev.filter((notif) => notif.notificationId !== notificationId)
+      );
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+    }
   };
 
-  const clearNotifications = () => {
-    setNotifications([]);
+  const clearNotifications = async () => {
+    if (!loggedInUser?.email) {
+      setNotifications([]);
+      return;
+    }
+
+    try {
+      await api.delete(`/notifications?email=${loggedInUser.email}`);
+      setNotifications([]);
+    } catch (error) {
+      console.error("Failed to clear notifications:", error);
+    }
+  };
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   const handleEnrollClick = (courseName) => {
@@ -100,6 +160,8 @@ const AuthProvider = ({ children }) => {
     setNotifications,
     highlightQuestionId,
     setHighlightQuestionId,
+    theme,
+    toggleTheme,
     courses,
     loadingCourses,
     enrolledCourses,

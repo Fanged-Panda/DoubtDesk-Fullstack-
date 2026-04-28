@@ -73,14 +73,14 @@ const LoginPage = ({ title, role, formColor, registerLink }) => {
     setPassword("");
   };
 
-  const formBgClass = `bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center border border-${formColor}-200`;
-  const submitButtonClass = `w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold`;
-  const loginBgClass = `min-h-screen bg-${formColor}-100 flex items-center justify-center p-4`;
+  const formBgClass = `bg-[var(--app-card)] rounded-2xl shadow-xl p-8 max-w-md w-full text-center border border-[var(--app-border)]`;
+  const submitButtonClass = `w-full bg-[var(--app-accent)] hover:bg-[var(--app-accent-strong)] text-white px-6 py-3 rounded-md font-semibold`;
+  const loginBgClass = `min-h-screen bg-[var(--app-bg)] text-[var(--app-text)] flex items-center justify-center p-4`;
 
   return (
     <div className={loginBgClass}>
       <div className={formBgClass}>
-        <h2 className="text-4xl font-bold text-gray-800 mb-8">{title}</h2>
+        <h2 className="text-4xl font-bold text-[var(--app-text)] mb-8">{title}</h2>
 
         {isForgotPasswordFlow ? (
           !emailForReset ? (
@@ -118,7 +118,7 @@ const LoginPage = ({ title, role, formColor, registerLink }) => {
                     setEmail(e.target.value);
                     setError("");
                   }}
-                  className="shadow-sm appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="shadow-sm appearance-none border border-[var(--app-border)] rounded-md w-full py-3 px-4 text-[var(--app-text)] bg-[var(--app-card)] leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -132,12 +132,12 @@ const LoginPage = ({ title, role, formColor, registerLink }) => {
                       setPassword(e.target.value);
                       setError("");
                     }}
-                    className="shadow-sm appearance-none border rounded-md w-full py-3 px-4 pr-12 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="shadow-sm appearance-none border border-[var(--app-border)] rounded-md w-full py-3 px-4 pr-12 text-[var(--app-text)] bg-[var(--app-card)] leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-[var(--app-muted)] hover:text-[var(--app-text)] focus:outline-none"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                     aria-pressed={showPassword}
                   >

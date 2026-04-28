@@ -1,5 +1,5 @@
 const { 
-  Question, Student, Teacher, User, Answer, Attachment, Course, Subject 
+  Question, Student, Teacher, User, Answer, Attachment, Course, Subject, Notification 
 } = require('../models');
 const { Op } = require('sequelize');
 
@@ -9,6 +9,30 @@ class QuestionService {
     const answer = q?.answer || null;
     const teacherUser = answer?.teacher?.User || null;
     const studentUser = q?.student?.User || null;
+
+    const followUps = (q?.followUpQuestions || []).map((followUp) => {
+      const followUpAnswer = followUp?.answer || null;
+
+      return {
+        questionId: followUp.questionId,
+        questionTitle: followUp.questionTitle,
+        description: followUp.description,
+        status: followUp.status,
+        postAt: followUp.postAt,
+        answerAt: followUpAnswer?.answerAt || followUp.answeredAt || null,
+        solutionText: followUpAnswer?.answerText || null,
+        questionAttachments: (followUp.questionAttachments || []).map((a) => ({
+          fileName: a.fileName,
+          fileUrl: a.fileUrl,
+          fileType: a.fileType
+        })),
+        solutionAttachments: (followUpAnswer?.answerAttachments || []).map((a) => ({
+          fileName: a.fileName,
+          fileUrl: a.fileUrl,
+          fileType: a.fileType
+        }))
+      };
+    });
 
     return {
       questionId: q.questionId,
@@ -33,7 +57,8 @@ class QuestionService {
         fileName: a.fileName,
         fileUrl: a.fileUrl,
         fileType: a.fileType
-      }))
+      })),
+      followUpQuestions: followUps
     };
   }
 
@@ -138,6 +163,26 @@ class QuestionService {
           {
             model: Attachment,
             as: 'questionAttachments'
+          },
+          {
+            model: Question,
+            as: 'followUpQuestions',
+            include: [
+              {
+                model: Answer,
+                as: 'answer',
+                include: [
+                  {
+                    model: Attachment,
+                    as: 'answerAttachments'
+                  }
+                ]
+              },
+              {
+                model: Attachment,
+                as: 'questionAttachments'
+              }
+            ]
           }
         ],
         where: {
@@ -207,6 +252,26 @@ class QuestionService {
           {
             model: Attachment,
             as: 'questionAttachments'
+          },
+          {
+            model: Question,
+            as: 'followUpQuestions',
+            include: [
+              {
+                model: Answer,
+                as: 'answer',
+                include: [
+                  {
+                    model: Attachment,
+                    as: 'answerAttachments'
+                  }
+                ]
+              },
+              {
+                model: Attachment,
+                as: 'questionAttachments'
+              }
+            ]
           }
         ],
         where: {
@@ -388,6 +453,20 @@ class QuestionService {
       await question.update({ status: statusUpdate, answeredAt: new Date() });
 
       await teacher.increment('solvedCount');
+
+      const student = await Student.findByPk(question.studentId, {
+        include: [{ model: User }]
+      });
+
+      if (student?.User?.email) {
+        await Notification.create({
+          recipientEmail: student.User.email,
+          questionId,
+          message: `Your question "${question.questionTitle}" has been answered.`,
+          type: 'solution',
+          read: false
+        });
+      }
 
       return await this.getQuestionById(questionId);
     } catch (error) {

@@ -18,8 +18,8 @@ const CourseDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full text-center border border-blue-200">
+    <div className="min-h-screen bg-[var(--app-bg)] text-[var(--app-text)] flex flex-col items-center justify-center p-8">
+      <div className="bg-[var(--app-card)] rounded-2xl shadow-xl p-8 max-w-2xl w-full text-center border border-[var(--app-border)]">
         <h2 className="text-4xl font-bold text-blue-600 mb-6">
           {courseName} Details
         </h2>
@@ -44,7 +44,7 @@ const CourseDetailsPage = () => {
             onClick={() => navigate("/student/dashboard")}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg"
           >
-            Back to Dashboard
+            Back to Student Page
           </button>
         </div>
       </div>

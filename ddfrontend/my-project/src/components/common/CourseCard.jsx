@@ -11,7 +11,7 @@ const CourseCard = ({
   onEnrollClick,
 }) => {
   return (
-    <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col h-full transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 border border-gray-100 overflow-hidden relative">
+    <div className="group bg-[var(--app-card)] rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col h-full transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 border border-[var(--app-border)] overflow-hidden relative">
       {/* Gradient Background Accent */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600"></div>
 
@@ -23,7 +23,7 @@ const CourseCard = ({
       </div>
 
       {/* Title */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+      <h3 className="text-2xl font-bold text-[var(--app-text)] mb-3 group-hover:text-blue-600 transition-colors duration-300">
         {courseName}
       </h3>
 
@@ -37,7 +37,7 @@ const CourseCard = ({
       {/* Features List */}
       <ul className="flex-grow mb-6 space-y-3">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-start text-gray-700">
+          <li key={index} className="flex items-start text-[var(--app-muted)]">
             <span className="text-green-500 font-bold mr-3 flex-shrink-0">✓</span>
             <span className="text-sm">{feature}</span>
           </li>

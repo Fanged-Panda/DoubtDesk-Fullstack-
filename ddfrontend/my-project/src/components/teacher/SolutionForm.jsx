@@ -10,7 +10,7 @@ const SolutionForm = ({
   isEditing = false, 
   initialSolutionText = "" 
 }) => {
-  const { loggedInUser, addNotification } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext);
   const [solutionText, setSolutionText] = useState(initialSolutionText);
   const [error, setError] = useState("");
 
@@ -74,17 +74,6 @@ const SolutionForm = ({
         await api.put(`/questions/${question.questionId}/solve`, payload);
       } else {
         await api.post(`/questions/${question.questionId}/solve`, payload);
-      }
-
-      if (question.studentEmail && !isEditing) {
-        addNotification(
-          question.studentEmail,
-          question.questionId,
-          `Your question "${question.questionTitle.substring(
-            0,
-            20
-          )}..." has been solved!`
-        );
       }
 
       onSolutionSuccess();

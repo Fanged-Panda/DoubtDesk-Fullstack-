@@ -9,6 +9,7 @@ const Subject = require('./Subject')(sequelize);
 const Question = require('./Question')(sequelize);
 const Answer = require('./Answer')(sequelize);
 const Attachment = require('./Attachment')(sequelize);
+const Notification = require('./Notification')(sequelize);
 const Payment = require('./Payment')(sequelize);
 const Feedback = require('./Feedback')(sequelize);
 const ResetToken = require('./ResetToken')(sequelize);
@@ -89,6 +90,7 @@ module.exports = {
   Question,
   Answer,
   Attachment,
+  Notification,
   Payment,
   Feedback,
   ResetToken,

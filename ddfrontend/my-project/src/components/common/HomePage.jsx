@@ -45,29 +45,29 @@ const HomePage = () => {
   ];
 
   return (
-    <main className="flex-grow bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+    <main className="flex-grow bg-[var(--app-bg)] text-[var(--app-text)] overflow-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20">
         {/* Animated background elements */}
-        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-6 sm:space-y-8">
               <div className="space-y-4">
-                <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
+                <span className="inline-block bg-[var(--app-card-alt)] text-[var(--app-text)] px-4 py-2 rounded-full text-sm font-semibold border border-[var(--app-border)]">
                   #1 Doubt Solving Platform 🏆
                 </span>
-                <h1 className="text-5xl sm:text-6xl font-black text-gray-900 leading-tight">
+                <h1 className="text-5xl sm:text-6xl font-black text-[var(--app-text)] leading-tight">
                   From Confusion to
                   <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Clarity</span>
                 </h1>
               </div>
               
-              <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
+              <p className="text-xl text-[var(--app-muted)] leading-relaxed max-w-xl">
                 Your personal doubt-solving companion. Get instant, clear answers from expert teachers available 24/7. No question is too small, no confusion too big.
               </p>
 
@@ -80,18 +80,24 @@ const HomePage = () => {
                 </button>
                 <button
                   onClick={() => navigate("/login/teacher")}
-                  className="px-8 py-4 border-2 border-gray-900 text-gray-900 font-bold rounded-lg hover:bg-gray-900 hover:text-white transition-all duration-300"
+                  className="px-8 py-4 border-2 border-[var(--app-text)] text-[var(--app-text)] font-bold rounded-lg hover:bg-[var(--app-text)] hover:text-[var(--app-surface)] transition-all duration-300"
                 >
                   Join as Teacher
+                </button>
+                <button
+                  onClick={() => navigate("/courses")}
+                  className="px-8 py-4 bg-[var(--app-card)] border-2 border-[var(--app-accent)] text-[var(--app-accent)] font-bold rounded-lg hover:bg-[var(--app-accent)] hover:text-white transition-all duration-300"
+                >
+                  Explore Courses
                 </button>
               </div>
 
               {/* Stats Row */}
-              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-gray-200">
+              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-[var(--app-border)]">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="text-3xl font-bold text-gray-900">{stat.number}</div>
-                    <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
+                    <div className="text-3xl font-bold text-[var(--app-text)]">{stat.number}</div>
+                    <p className="text-sm text-[var(--app-muted)] mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -101,23 +107,23 @@ const HomePage = () => {
             <div className="relative hidden lg:block">
               <div className="relative">
                 {/* Floating Card 1 */}
-                <div className="absolute -top-10 -right-10 bg-white rounded-2xl shadow-2xl p-6 w-64 animate-bounce" style={{ animationDelay: "0s" }}>
+                <div className="absolute -top-10 -right-10 bg-[var(--app-card)] rounded-2xl shadow-2xl p-6 w-64 animate-bounce border border-[var(--app-border)]" style={{ animationDelay: "0s" }}>
                   <div className="flex items-center gap-3">
                     <span className="text-4xl">24/7</span>
                     <div>
-                      <p className="font-bold text-gray-900">Expert Teachers</p>
-                      <p className="text-sm text-gray-600">Clear Your Confusion</p>
+                      <p className="font-bold text-[var(--app-text)]">Expert Teachers</p>
+                      <p className="text-sm text-[var(--app-muted)]">Clear Your Confusion</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Floating Card 2 */}
-                <div className="absolute bottom-20 -left-10 bg-white rounded-2xl shadow-2xl p-6 w-64 animate-bounce" style={{ animationDelay: "0.5s" }}>
+                <div className="absolute bottom-20 -left-10 bg-[var(--app-card)] rounded-2xl shadow-2xl p-6 w-64 animate-bounce border border-[var(--app-border)]" style={{ animationDelay: "0.5s" }}>
                   <div className="flex items-center gap-3">
                     <span className="text-4xl">⚡</span>
                     <div>
-                      <p className="font-bold text-gray-900">Instant Answers</p>
-                      <p className="text-sm text-gray-600">In minutes, not hours</p>
+                      <p className="font-bold text-[var(--app-text)]">Instant Answers</p>
+                      <p className="text-sm text-[var(--app-muted)]">In minutes, not hours</p>
                     </div>
                   </div>
                 </div>
@@ -140,9 +146,9 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[var(--app-card)]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">Why Students Love DoubtDesk</h2>
+          <h2 className="text-4xl font-bold text-center text-[var(--app-text)] mb-16">Why Students Love DoubtDesk</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -153,10 +159,10 @@ const HomePage = () => {
               { icon: "📊", title: "Track Progress", desc: "See your improvement with detailed analytics" },
               { icon: "🌍", title: "24/7 Available", desc: "Help whenever you need it, day or night" },
             ].map((feature, index) => (
-              <div key={index} className="p-8 rounded-2xl border-2 border-gray-100 hover:border-blue-500 hover:shadow-lg transition-all duration-300 group">
+              <div key={index} className="p-8 rounded-2xl border-2 border-[var(--app-border)] hover:border-[var(--app-accent)] hover:shadow-lg transition-all duration-300 group bg-[var(--app-card)]">
                 <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
+                <h3 className="text-xl font-bold text-[var(--app-text)] mb-3">{feature.title}</h3>
+                <p className="text-[var(--app-muted)]">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -164,10 +170,10 @@ const HomePage = () => {
       </section>
 
       {/* Courses Section */}
-      <section id="courses-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white" ref={coursesSectionRef}>
+      <section id="courses-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-[var(--app-bg)]" ref={coursesSectionRef}>
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-center text-gray-900 mb-4">Popular Courses</h2>
-          <p className="text-center text-gray-600 text-xl mb-16">Choose your path and start learning with expert guidance</p>
+          <h2 className="text-5xl font-bold text-center text-[var(--app-text)] mb-4">Popular Courses</h2>
+          <p className="text-center text-[var(--app-muted)] text-xl mb-16">Choose your path and start learning with expert guidance</p>
           
           {loadingCourses ? (
             <div className="flex justify-center items-center py-12">

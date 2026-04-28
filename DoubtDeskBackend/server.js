@@ -13,6 +13,7 @@ const courseRoutes = require('./routes/course');
 const paymentRoutes = require('./routes/payment');
 const adminRoutes = require('./routes/admin');
 const fileRoutes = require('./routes/file');
+const notificationRoutes = require('./routes/notification');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/files', fileRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -55,9 +57,11 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3001;
 
 db.sequelize.sync().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }
 }).catch(err => {
   console.error('Database sync failed:', err);
 });

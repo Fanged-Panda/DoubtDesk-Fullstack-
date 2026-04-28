@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import AttachmentDisplay from "../common/AttachmentDisplay"; // নতুন কম্পোনেন্ট ইম্পোর্ট
 
 const QuestionHistoryPage = () => {
-  const { loggedInUser, addNotification } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -91,8 +91,8 @@ const QuestionHistoryPage = () => {
   if (error) return <p className="text-center text-red-500 p-8">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-8">
-      <div className="bg-white rounded-lg shadow-xl p-6 sm:p-8 max-w-3xl w-full">
+    <div className="min-h-screen bg-[var(--app-bg)] text-[var(--app-text)] flex flex-col items-center p-4 sm:p-8">
+      <div className="bg-[var(--app-card)] rounded-2xl shadow-xl p-6 sm:p-8 max-w-3xl w-full border border-[var(--app-border)]">
         <h2 className="text-3xl sm:text-4xl font-bold text-purple-600 mb-6 text-center">
           {filterByCourseName
             ? `Questions for ${filterByCourseName}`
@@ -100,7 +100,7 @@ const QuestionHistoryPage = () => {
         </h2>
 
         {questions.length === 0 && currentPage === 0 ? (
-          <p className="text-lg text-gray-700 text-center">
+              <p className="text-lg text-[var(--app-muted)] text-center">
             No questions found.
           </p>
         ) : (
@@ -110,14 +110,14 @@ const QuestionHistoryPage = () => {
               return (
                 <div
                   key={question.questionId}
-                  className="bg-purple-50 p-4 rounded-lg shadow-sm border"
+                  className="bg-[var(--app-card-alt)] p-4 rounded-xl shadow-sm border border-[var(--app-border)]"
                 >
                   <div className="text-left">
-                    <p className="font-semibold text-gray-800 mb-2">
+                    <p className="font-semibold text-[var(--app-text)] mb-2">
                       {question.questionTitle}
                     </p>
-                    <p className="text-gray-700">{question.description}</p>
-                    <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
+                    <p className="text-[var(--app-muted)]">{question.description}</p>
+                    <div className="flex justify-between items-center text-sm text-[var(--app-muted)] mt-2">
                       <span>
                         Subject:{" "}
                         <span className="font-semibold">
@@ -136,8 +136,45 @@ const QuestionHistoryPage = () => {
                     />
                   </div>
 
+                  {question.followUpQuestions && question.followUpQuestions.length > 0 && (
+                    <div className="mt-4 border-t border-[var(--app-border)] pt-4">
+                      <p className="text-sm font-semibold text-[var(--app-text)]">Follow-up questions</p>
+                      <div className="mt-2 space-y-3">
+                        {question.followUpQuestions.map((followUp) => (
+                          <div
+                            key={followUp.questionId}
+                            className="bg-[var(--app-card)] border border-[var(--app-border)] rounded-lg p-3"
+                          >
+                            <p className="text-[var(--app-text)] font-semibold">
+                              {followUp.questionTitle}
+                            </p>
+                            <p className="text-sm text-[var(--app-muted)] mt-1">
+                              {followUp.description}
+                            </p>
+                            <AttachmentDisplay
+                              attachments={followUp.questionAttachments}
+                            />
+                            {followUp.solutionText && (
+                              <div className="mt-2 p-3 rounded-md bg-[var(--app-card-alt)] border border-[var(--app-border)]">
+                                <p className="text-sm font-semibold text-[var(--app-text)]">
+                                  Follow-up solution
+                                </p>
+                                <p className="text-sm text-[var(--app-text)] whitespace-pre-wrap mt-1">
+                                  {followUp.solutionText}
+                                </p>
+                                <AttachmentDisplay
+                                  attachments={followUp.solutionAttachments}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {question.solutionText && (
-                    <div className="mt-3 p-3 bg-green-50 rounded-md border border-green-200 text-left">
+                    <div className="mt-3 p-3 bg-emerald-50 rounded-md border border-emerald-200 text-left">
                       <p className="font-semibold text-green-800 mb-1">
                         Solution by {question.solvedByTeacherName || "Teacher"}:
                       </p>
@@ -202,7 +239,7 @@ const QuestionHistoryPage = () => {
             onClick={() => navigate("/student/dashboard")}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg"
           >
-            Back to Dashboard
+            Back to Student Page
           </button>
         </div>
       </div>
