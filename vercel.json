@@ -20,11 +20,11 @@
     },
     {
       "source": "/(.*\\.[a-zA-Z0-9]+)$",
-      "destination": "/ddfrontend/my-project/dist/$1"
+      "destination": "/$1"
     },
     {
       "source": "/(.*)",
-      "destination": "/ddfrontend/my-project/dist/index.html"
+      "destination": "/index.html"
     }
   ]
 }
